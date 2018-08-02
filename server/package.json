@@ -1,0 +1,33 @@
+{
+  "name": "class_assistant",
+  "version": "1.0.0",
+  "description": "Learning Management System",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "app": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/nur_islam/Class_Assistant.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/nur_islam/Class_Assistant/issues"
+  },
+  "homepage": "https://gitlab.com/nur_islam/Class_Assistant#README",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.2.6",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "validator": "^10.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
+}
