@@ -1,7 +1,10 @@
-FROM node:8
+FROM node:9.4.0
 
 # Create app directory
 WORKDIR /usr/src/app
+
+# for nodemon.
+RUN npm install -g nodemon
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -11,6 +14,7 @@ COPY package*.json ./
 RUN npm install
 # If you are building your code for production
 # RUN npm install --only=production
+
 
 # Bundle app source
 COPY . .
