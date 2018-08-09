@@ -25,7 +25,7 @@ router.post('/register', (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
 
   // Chek Validation
-  if(!isValid) {
+  if (!isValid) {
     return res.status(400).json(errors);
   }
 
@@ -69,7 +69,7 @@ router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
 
   // Chek Validation
-  if(!isValid) {
+  if (!isValid) {
     return res.status(400).json(errors);
   }
 
