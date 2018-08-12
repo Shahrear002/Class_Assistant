@@ -37,11 +37,11 @@ const ProfileSchema = new Schema({
         type: String,
         required: true
       },
-      company: {
+      category: {
         type: String,
         required: true
       },
-      location: {
+      institute: {
         type: String
       },
       from: {
