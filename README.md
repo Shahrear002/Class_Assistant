@@ -1,6 +1,6 @@
 # Class_Assistant
 
-### To Run the app (Server Only) type the following command
+### To Run the app (Server Only)
 
 ##### make sure, Class_Assistant/server directory & type the following command
 
