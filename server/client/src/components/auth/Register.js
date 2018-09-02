@@ -97,11 +97,12 @@ class Register extends Component {
                     value={this.state.role}
                     onChange={this.onChange}
                   >
-                    <option default>Student</option>
-                    <option>Teacher</option>
+                    <option>Role</option>
+                    <option>student</option>
+                    <option>teacher</option>
                   </select>
                 </div>
-                <input type="submit" className="btn btn-info btn-block mt-4" />
+                <input type="submit" className="btn btn-dark btn-block mt-4" />
               </form>
             </div>
           </div>
