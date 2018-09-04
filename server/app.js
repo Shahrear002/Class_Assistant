@@ -18,8 +18,13 @@ app.use(bodyParser.json());
 const db = require('./config/keys').mongoURI;
 
 // Connect to MongoDB
+// here I added {useNewUrlParser: true} to resolve a warning
+// similar to this -> https://github.com/typeorm/mongo-typescript-example/issues/1
 mongoose
-  .connect(db)
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
