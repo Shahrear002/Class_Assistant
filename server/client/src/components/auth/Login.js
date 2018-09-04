@@ -17,6 +17,12 @@ class Login extends Component {
     // this.onChange = this.onChange.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
@@ -62,7 +68,6 @@ class Login extends Component {
                     className={classnames('form-control form-control-lg', {
                       'is-invalid': errors.email
                     })}
-                    className="form-control form-control-lg"
                     placeholder="Email Address"
                     name="email"
                     value={this.state.email}
@@ -78,7 +83,6 @@ class Login extends Component {
                     className={classnames('form-control form-control-lg', {
                       'is-invalid': errors.password
                     })}
-                    className="form-control form-control-lg"
                     placeholder="Password"
                     name="password"
                     value={this.state.password}
