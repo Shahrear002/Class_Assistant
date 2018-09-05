@@ -89,11 +89,15 @@ router.get(
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Classroom.findById(req.params.id).then(students => {
-			var userMap = {};
+			var userMap = [];
+			var st = [];
 
 			userMap = students.enrolledStudents;
+			userMap.forEach(function(student) {
+				st.push(student.user);
+			});
 
-			res.send(userMap);
+			res.send(st);
 		});
 	}
 );
