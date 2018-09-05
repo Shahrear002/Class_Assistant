@@ -24,6 +24,13 @@ router.post(
 	'/createclass',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
+		const { errors, isValid } = validateClassroomInput(req.body);
+
+		// Check Validation
+		if (!isValid) {
+			return res.status(400).json(errors);
+		}
+
 		const newClassroom = new Classroom({
 			name: req.body.name,
 			section: req.body.section,
@@ -35,5 +42,14 @@ router.post(
 		newClassroom.save().then(classroom => res.json(classroom));
 	}
 );
+
+// @route GET api/classroom/join
+// @description Join In Classroom
+// @access Private
+/*router.get(
+	'/joinclass',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {}
+);*/
 
 module.exports = router;

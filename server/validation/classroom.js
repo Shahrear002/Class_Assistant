@@ -4,14 +4,14 @@ const isEmpty = require('./is-empty');
 module.exports = function validateClassroomInput(data) {
 	let errors = {};
 
-	data.text = !isEmpty(data.text) ? data.text : '';
+	data.name = !isEmpty(data.name) ? data.name : '';
 
-	if (!Validator.isLength(data.text, { min: 6, max: 50 })) {
-		errors.text = 'Classroom name must be between 6 and 50 characters';
+	if (!Validator.isLength(data.name, { min: 6, max: 25 })) {
+		errors.name = 'Classroom Name must be between 6 and 25 characters';
 	}
 
-	if (Validator.isEmpty(data.text)) {
-		errors.text = 'Classroom name field is required';
+	if (Validator.isEmpty(data.name)) {
+		errors.name = 'Classroom Name field is required';
 	}
 
 	return {
