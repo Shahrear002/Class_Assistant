@@ -50,7 +50,7 @@ router.post(
 	}
 );
 
-// @route GET api/classroom/join
+// @route POST api/classroom/joinclass
 // @description Join In Classroom
 // @access Private
 router.post(
@@ -65,11 +65,9 @@ router.post(
 		}
 
 		const classcode = req.body.enrollmentCode;
-		console.log(classcode);
 
 		// Find Classroom By EnrollmentCode
 		Classroom.findOne({ enrollmentCode: classcode }).then(classroom => {
-			console.log(classroom);
 			if (!classroom) {
 				errors.classroom = 'Classroom not found';
 				return res.status(404).json(errors);
@@ -79,7 +77,23 @@ router.post(
 			classroom.enrolledStudents.unshift({ user: req.user.id });
 
 			classroom.save().then(classroom => res.json(classroom));
-			console.log(classroom);
+		});
+	}
+);
+
+// @route GET api/classroom/join
+// @description Showing Enrolled Students
+// @access Private
+router.get(
+	'/enrolledstudents/:id',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Classroom.findById(req.params.id).then(students => {
+			var userMap = {};
+
+			userMap = students.enrolledStudents;
+
+			res.send(userMap);
 		});
 	}
 );
