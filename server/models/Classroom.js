@@ -20,7 +20,8 @@ const ClassroomSchema = new Schema({
 		type: String
 	},
 	enrollmentCode: {
-		type: String
+		type: String,
+		required: true
 	},
 	creationTime: {
 		type: Date,
@@ -36,8 +37,10 @@ const ClassroomSchema = new Schema({
 	],
 	posts: [
 		{
-			type: Schema.Types.ObjectId,
-			ref: 'posts'
+			posts: {
+				type: Schema.Types.ObjectId,
+				ref: 'posts'
+			}
 		}
 	],
 	avatar: {

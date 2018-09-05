@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
+const randtoken = require('rand-token');
 
 //Classroom Model
 const Classroom = require('../../models/Classroom');
@@ -14,6 +15,7 @@ const User = require('../../models/User');
 
 // Validation
 const validateClassroomInput = require('../../validation/classroom');
+const validateJoinclassInput = require('../../validation/classcode');
 
 router.get('/test', (req, res) => res.json({ msg: 'classroom works' }));
 
@@ -31,12 +33,17 @@ router.post(
 			return res.status(400).json(errors);
 		}
 
+		// Enrollment Code generate
+		const classcode = randtoken.generate(6);
+		//console.log(token);
+
 		const newClassroom = new Classroom({
 			name: req.body.name,
 			section: req.body.section,
 			description: req.body.description,
 			room: req.body.room,
 			ownerId: req.user.id,
+			enrollmentCode: classcode,
 			avatar: req.body.avatar
 		});
 		newClassroom.save().then(classroom => res.json(classroom));
@@ -46,10 +53,35 @@ router.post(
 // @route GET api/classroom/join
 // @description Join In Classroom
 // @access Private
-/*router.get(
+router.post(
 	'/joinclass',
 	passport.authenticate('jwt', { session: false }),
-	(req, res) => {}
-);*/
+	(req, res) => {
+		const { errors, isValid } = validateJoinclassInput(req.body);
+
+		// Check Validation
+		if (!isValid) {
+			return res.status(400).json(errors);
+		}
+
+		const classcode = req.body.enrollmentCode;
+		console.log(classcode);
+
+		// Find Classroom By EnrollmentCode
+		Classroom.findOne({ enrollmentCode: classcode }).then(classroom => {
+			console.log(classroom);
+			if (!classroom) {
+				errors.classroom = 'Classroom not found';
+				return res.status(404).json(errors);
+			}
+
+			// Add students id to enrolledStudents array
+			classroom.enrolledStudents.unshift({ user: req.user.id });
+
+			classroom.save().then(classroom => res.json(classroom));
+			console.log(classroom);
+		});
+	}
+);
 
 module.exports = router;
