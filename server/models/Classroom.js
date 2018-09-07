@@ -37,7 +37,7 @@ const ClassroomSchema = new Schema({
 	],
 	posts: [
 		{
-			posts: {
+			post: {
 				type: Schema.Types.ObjectId,
 				ref: 'posts'
 			}

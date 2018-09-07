@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const randtoken = require('rand-token');
 
+var post = require('./posts');
+
 //Classroom Model
 const Classroom = require('../../models/Classroom');
 // Post Model
@@ -17,6 +19,7 @@ const User = require('../../models/User');
 const validateClassroomInput = require('../../validation/classroom');
 const validateJoinclassInput = require('../../validation/classcode');
 
+// Test route
 router.get('/test', (req, res) => res.json({ msg: 'classroom works' }));
 
 // @route POST api/classroom/register
@@ -52,7 +55,7 @@ router.post(
 
 // @route POST api/classroom/joinclass
 // @description Join In Classroom
-// @access Private
+// @access Privateretrieve individual track data and render on single track page
 router.post(
 	'/joinclass',
 	passport.authenticate('jwt', { session: false }),
@@ -82,7 +85,7 @@ router.post(
 );
 
 // @route GET api/classroom/join
-// @description Showing Enrolled Students
+// @description Showing Enrolled Students By Classroom ID
 // @access Private
 router.get(
 	'/enrolledstudents/:id',
@@ -101,5 +104,12 @@ router.get(
 		});
 	}
 );
+
+// @route post api/classroom/posts
+// @description Posts in Classroom
+// @access Private
+router
+	.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {})
+	.use('/post', post);
 
 module.exports = router;
