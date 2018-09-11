@@ -72,7 +72,6 @@ class CreateProfile extends Component {
       profile.instagram = !isEmpty(profile.social.instagram)
         ? profile.social.instagram
         : '';
-
       // Set component fields state
       this.setState({
         handle: profile.handle,
@@ -85,6 +84,7 @@ class CreateProfile extends Component {
         twitter: profile.twitter,
         facebook: profile.facebook,
         linkedin: profile.linkedin,
+        instagram: profile.instagram,
         youtube: profile.youtube
       });
     }
@@ -239,7 +239,6 @@ class CreateProfile extends Component {
                   error={errors.bio}
                   info="Tell us a little about yourself"
                 />
-
                 <div className="mb-3">
                   <button
                     type="button"
@@ -250,7 +249,7 @@ class CreateProfile extends Component {
                     }}
                     className="btn btn-light"
                   >
-                    Add Social Network Links
+                    Add Social Accounts
                   </button>
                   <span className="text-muted">Optional</span>
                 </div>
