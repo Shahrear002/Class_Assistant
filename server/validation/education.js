@@ -8,6 +8,7 @@ module.exports = function validateEducationInput(data) {
   data.degree = !isEmpty(data.degree) ? data.degree : '';
   data.fieldofstudy = !isEmpty(data.fieldofstudy) ? data.fieldofstudy : '';
   data.from = !isEmpty(data.from) ? data.from : '';
+  // data.to = !isEmpty(data.to) ? data.to : '';
 
   if (Validator.isEmpty(data.institute)) {
     errors.institute = 'Institute field is required';
@@ -24,6 +25,10 @@ module.exports = function validateEducationInput(data) {
   if (Validator.isEmpty(data.from)) {
     errors.from = 'from date field is required';
   }
+
+  // if (Validator.isEmpty(data.to)) {
+  //   errors.to = 'to date field is required';
+  // }
 
   return {
     errors,

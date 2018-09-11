@@ -15,7 +15,7 @@ class AddExperience extends Component {
       institute: '',
       from: '',
       to: '',
-      current: '',
+      current: false,
       description: '',
       errors: {},
       disabled: false
@@ -126,7 +126,7 @@ class AddExperience extends Component {
                   </label>
                 </div>
                 <TextAreaFieldGroup
-                  placeholder="Job Description"
+                  placeholder="Description"
                   name="description"
                   value={this.state.description}
                   onChange={this.onChange}
