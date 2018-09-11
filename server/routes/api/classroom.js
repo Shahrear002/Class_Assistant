@@ -36,6 +36,14 @@ router.post(
 			return res.status(400).json(errors);
 		}
 
+		// Check user is a teacher or not
+		const Role = req.user.role;
+		if (Role.toUpperCase() !== 'TEACHER') {
+			return res
+				.status(400)
+				.json({ msg: 'You must be a teacher to create a classroom' });
+		}
+
 		// Enrollment Code generate
 		const classcode = randtoken.generate(6);
 		//console.log(token);
@@ -83,6 +91,10 @@ router.post(
 		});
 	}
 );
+
+// @route GET api/classroom
+// @description Showing Enrolled Students By Classroom ID
+// @access Private
 
 // @route GET api/classroom/join
 // @description Showing Enrolled Students By Classroom ID
