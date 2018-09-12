@@ -7,6 +7,7 @@ const passport = require('passport');
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const posts = require('./routes/api/posts');
+const classrooms = require('./routes/api/classrooms');
 
 const app = express();
 
@@ -21,12 +22,9 @@ const db = require('./config/keys').mongoURI;
 // here I added {useNewUrlParser: true} to resolve a warning
 // similar to this -> https://github.com/typeorm/mongo-typescript-example/issues/1
 mongoose
-  .connect(
-    db,
-    { useNewUrlParser: true }
-  )
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+	.connect(db)
+	.then(() => console.log('MongoDB Connected'))
+	.catch(err => console.log(err));
 
 // Passport middleware
 app.use(passport.initialize());
@@ -38,6 +36,7 @@ require('./config/passport')(passport);
 app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/posts', posts);
+app.use('/api/classrooms', classrooms);
 
 const port = process.env.PORT || 5000;
 
