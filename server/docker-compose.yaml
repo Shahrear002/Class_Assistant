@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+
+  server:
+    image: server-app:latest
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+
+  client:
+    image: react-app:latest
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - server
+
+      
+    # volumes:
+    #   - '.:/usr/src/app'
+    #   - '/usr/src/app/node_modules'
+    # container_name: react-app
+    # build:
+    #   context: ./client/
+    #   dockerfile: Dockerfile
+    # volumes:
+    #   - '.:/usr/src/app'
+    #   - '/usr/src/app/node_modules'
+    # ports:
+    #   - '3000:3000'
+    # environment:
+    #   - NODE_ENV=production
