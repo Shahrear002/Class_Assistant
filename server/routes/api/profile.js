@@ -28,7 +28,7 @@ router.get(
     const errors = {};
 
     Profile.findOne({ user: req.user.id })
-      .populate('user', ['name', 'avatar']) // getting user avatar
+      .populate('user', ['name', 'avatar', 'role']) // getting user avatar
       .then(profile => {
         if (!profile) {
           errors.noprofile = 'There is no profile for this user';
@@ -45,7 +45,7 @@ router.get(
 // @access Public
 router.get('/all', (req, res) => {
   Profile.find()
-    .populate('user', ['name', 'avatar']) // getting user avatar
+    .populate('user', ['name', 'avatar', 'role']) // getting user avatar
     .then(profiles => {
       if (!profiles) {
         errors.noprofile = 'There are no profiles';
@@ -64,7 +64,7 @@ router.get('/handle/:handle', (req, res) => {
   const errors = {};
 
   Profile.findOne({ handle: req.params.handle })
-    .populate('user', ['name', 'avatar']) // getting user avatar
+    .populate('user', ['name', 'avatar', 'role']) // getting user avatar
     .then(profile => {
       if (!profile) {
         errors.noprofile = 'There is no profile for this user';
@@ -83,7 +83,7 @@ router.get('/user/:user_id', (req, res) => {
   const errors = {};
 
   Profile.findOne({ user: req.params.user_id })
-    .populate('user', ['name', 'avatar']) // getting user avatar
+    .populate('user', ['name', 'avatar', 'role']) // getting user avatar
     .then(profile => {
       if (!profile) {
         errors.noprofile = 'There is no profile for this user';
@@ -130,7 +130,7 @@ router.post(
     if (req.body.youtube) profileFields.social.youtube = req.body.youtube;
     if (req.body.twitter) profileFields.social.twitter = req.body.twitter;
     if (req.body.facebook) profileFields.social.facebook = req.body.facebook;
-    if (req.body.lindedin) profileFields.social.lindedin = req.body.lindedin;
+    if (req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
     if (req.body.instagram) profileFields.social.instagram = req.body.instagram;
 
     Profile.findOne({ user: req.user.id }).then(profile => {
