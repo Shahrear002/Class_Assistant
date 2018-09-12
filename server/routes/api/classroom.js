@@ -126,14 +126,11 @@ router.get(
 				var userMap = [];
 				var st = [];
 
-				userMap = students.enrolledStudents;
+				userMap = students.enrolledStudents.slice();
+
 				userMap.forEach(function(student) {
 					st.push(student.user);
 				});
-
-				if (st.length < 1) {
-					res.status(404).json({ nostudentsfound: 'No students found' });
-				}
 
 				res.send(st);
 			})
@@ -143,7 +140,7 @@ router.get(
 	}
 );
 
-// @route post api/classroom/posts
+// @route post api/classroom/:classroom_id/posts
 // @description Posts in Classroom
 // @access Private
 router
