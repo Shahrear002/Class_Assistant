@@ -78,35 +78,43 @@ router.post(
 
 		// Check user is a student or not
 		const Role = req.user.role;
+		console.log(Role);
 		if (Role.toUpperCase() !== 'STUDENT') {
 			return res
-				.status(400)
+				.status(404)
 				.json({ msg: 'You must be a student to enroll in a classroom' });
 		}
 
 		const classcode = req.body.enrollmentCode;
 
 		// Find Classroom By EnrollmentCode
-		Classroom.findOne({ enrollmentCode: classcode }).then(classroom => {
-			if (!classroom) {
-				errors.classroom = 'Classroom not found';
-				return res.status(404).json(errors);
-			}
-
-			// Checking user is already enrolled or not
-			var k;
-			var est = classroom.enrolledStudents;
-			for (k = 0; k < est.length; k++) {
-				if (req.user.id.toString() === est[k].user.toString()) {
-					return res.status(404).json('You are already enrolled');
+		Classroom.findOne({ enrollmentCode: classcode })
+			.then(classroom => {
+				if (!classroom) {
+					//console.log(true);
+					return res.status(404).json({ noclassfound: 'Classroom not found' });
 				}
-			}
 
-			// Add students id to enrolledStudents array
-			classroom.enrolledStudents.unshift({ user: req.user.id });
+				// Checking user is already enrolled or not
+				var k;
+				var est = classroom.enrolledStudents;
+				for (k = 0; k < est.length; k++) {
+					if (req.user.id.toString() === est[k].user.toString()) {
+						//console.log(true);
+						return res.status(404).json('You are already enrolled');
+					}
+				}
 
-			classroom.save().then(classroom => res.json(classroom));
-		});
+				// Add students id to enrolledStudents array
+				classroom.enrolledStudents.unshift({ user: req.user.id });
+
+				classroom.save().then(classroom => res.json(classroom));
+
+				res.json({ success: 'true' });
+			})
+			.catch(err =>
+				res.status(404).json({ noclassfound: 'classroom not found' })
+			);
 	}
 );
 
@@ -119,22 +127,48 @@ router.get(
 	(req, res) => {
 		Classroom.find()
 			.then(cls => {
-				var i;
-				var classes = [];
-				for (i = 0; i < cls.length; i++) {
-					//cl = cls[i];
-					//console.log(cl);
-					var students = cls[i].enrolledStudents;
-					//console.log(req.user.id);
-					var j;
-					for (j = 0; j < students.length; j++) {
-						if (req.user.id.toString() === students[j].user.toString()) {
+				if (req.user.role.toUpperCase() === 'STUDENT') {
+					var i;
+					var classes = [];
+					for (i = 0; i < cls.length; i++) {
+						//cl = cls[i];
+						//console.log(cl);
+						var students = cls[i].enrolledStudents;
+						var j;
+						for (j = 0; j < students.length; j++) {
+							if (req.user.id.toString() === students[j].user.toString()) {
+								classes.push(cls[i]);
+								//	console.log(students[0].user);
+							}
+						}
+					}
+
+					if (classes.length < 1) {
+						return res
+							.status(404)
+							.json({ noclassfound: 'you are not enrolled in a classroom' });
+					}
+
+					res.json(classes);
+				}
+
+				if (req.user.role.toUpperCase() === 'TEACHER') {
+					var i;
+					var classes = [];
+					for (i = 0; i < cls.length; i++) {
+						//cl = cls[i];
+						//console.log(cl);
+						var teacher = cls[i].ownerId;
+						//console.log(req.user.id);
+
+						if (req.user.id.toString() === teacher.toString()) {
 							classes.push(cls[i]);
 							//	console.log(students[0].user);
 						}
 					}
+
+					res.json(classes);
 				}
-				res.json(classes);
 			})
 			.catch(err =>
 				res
@@ -184,6 +218,9 @@ router.get(
 					st.push(student.user);
 				});
 
+				if (st.length <= 0) {
+					res.status.json({ nostudents: 'No students found' });
+				}
 				res.send(st);
 			})
 			.catch(err =>
@@ -199,9 +236,21 @@ router.delete(
 	'/deleteclassroom/:classroom_id',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
-		Classroom.findOneAndRemove({ _id: req.params.classroom_id }).then(cls => {
-			res.json({ success: true });
-		});
+		Classroom.findOne({ _id: req.params.classroom_id })
+			.then(cls => {
+				if (req.user.id.toString() !== cls.ownerId.toString()) {
+					return res
+						.status(404)
+						.json({ nopermission: 'You are not authorized' });
+				} else {
+					Classroom.findOneAndRemove({ _id: req.params.classroom_id }).then(
+						clss => res.json({ success: true })
+					);
+				}
+			})
+			.catch(err =>
+				res.status(404).json({ noclassfound: 'Classroom not found' })
+			);
 	}
 );
 
