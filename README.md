@@ -24,14 +24,24 @@ $ npm start
 $ npm run dev
 ```
 
-docker build:
+### docker build:
 
-cd to /server/client/
+#### cd to /server/client/
+
+```sh
 client : docker build -t react-app .
+```
 
-cd to /server/
+##### cd to /server/
+
+```sh
 server : docker build -t server-app .
+```
 
-now run FROM
-cd to /server/
+### now run FROM
+
+#### cd to /server/
+
+```sh
 run: docker-compose up
+```
