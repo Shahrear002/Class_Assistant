@@ -114,11 +114,11 @@ router.get(
 	}
 );
 
-// @route GET api/classroom/join
+// @route GET api/classrooms/:id/enrolledstudents
 // @description Showing Enrolled Students By Classroom ID
 // @access Private
 router.get(
-	'/enrolledstudents/:id',
+	'/:id/enrolledstudents',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
 		Classroom.findById(req.params.id)
@@ -140,11 +140,24 @@ router.get(
 	}
 );
 
+// @route GET api/classrooms/deleteclassroom/:classroom_id
+// @description Delete a classroom
+// @access Private
+router.delete(
+	'/deleteclassroom/:classroom_id',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Classroom.findOneAndRemove({ _id: req.params.classroom_id }).then(cls => {
+			res.json({ success: true });
+		});
+	}
+);
+
 // @route post api/classroom/:classroom_id/posts
 // @description Posts in Classroom
 // @access Private
 router
 	.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {})
-	.use('/post', post);
+	.use('/:id/post', post);
 
 module.exports = router;
