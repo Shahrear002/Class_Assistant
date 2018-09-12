@@ -121,17 +121,25 @@ router.get(
 	'/enrolledstudents/:id',
 	passport.authenticate('jwt', { session: false }),
 	(req, res) => {
-		Classroom.findById(req.params.id).then(students => {
-			var userMap = [];
-			var st = [];
+		Classroom.findById(req.params.id)
+			.then(students => {
+				var userMap = [];
+				var st = [];
 
-			userMap = students.enrolledStudents;
-			userMap.forEach(function(student) {
-				st.push(student.user);
-			});
+				userMap = students.enrolledStudents;
+				userMap.forEach(function(student) {
+					st.push(student.user);
+				});
 
-			res.send(st);
-		});
+				if (st.length < 1) {
+					res.status(404).json({ nostudentsfound: 'No students found' });
+				}
+
+				res.send(st);
+			})
+			.catch(err =>
+				res.status(404).json({ nostudentsfound: 'No students found' })
+			);
 	}
 );
 
