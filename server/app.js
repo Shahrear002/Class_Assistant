@@ -22,9 +22,12 @@ const db = require('./config/keys').mongoURI;
 // here I added {useNewUrlParser: true} to resolve a warning
 // similar to this -> https://github.com/typeorm/mongo-typescript-example/issues/1
 mongoose
-	.connect(db)
-	.then(() => console.log('MongoDB Connected'))
-	.catch(err => console.log(err));
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
 
 // Passport middleware
 app.use(passport.initialize());
