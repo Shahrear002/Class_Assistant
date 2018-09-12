@@ -93,6 +93,15 @@ router.post(
 				return res.status(404).json(errors);
 			}
 
+			// Checking user is already enrolled or not
+			var k;
+			var est = classroom.enrolledStudents;
+			for (k = 0; k < est.length; k++) {
+				if (req.user.id.toString() === est[k].user.toString()) {
+					return res.status(404).json('You are already enrolled');
+				}
+			}
+
 			// Add students id to enrolledStudents array
 			classroom.enrolledStudents.unshift({ user: req.user.id });
 
