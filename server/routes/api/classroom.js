@@ -92,9 +92,27 @@ router.post(
 	}
 );
 
-// @route GET api/classroom
-// @description Showing Enrolled Students By Classroom ID
+// @route GET api/classroom/:user_id/:classroom_id
+// @description GET classroom by classroom id
 // @access Private
+router.get(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Classroom.findById(req.params.id)
+			.then(cls => {
+				//console.log(cls);
+				if (!cls) {
+					res.status(404).json({ noclassfound: 'Classroom not found' });
+				}
+
+				res.json(cls);
+			})
+			.catch(err =>
+				res.status(404).json({ noclassfound: 'Classroom not found' })
+			);
+	}
+);
 
 // @route GET api/classroom/join
 // @description Showing Enrolled Students By Classroom ID
