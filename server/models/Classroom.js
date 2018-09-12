@@ -19,6 +19,10 @@ const ClassroomSchema = new Schema({
 	ownerId: {
 		type: String
 	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: 'users'
+	},
 	enrollmentCode: {
 		type: String,
 		required: true

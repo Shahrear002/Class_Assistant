@@ -22,7 +22,7 @@ const validateJoinclassInput = require('../../validation/classcode');
 // Test route
 router.get('/test', (req, res) => res.json({ msg: 'classroom works' }));
 
-// @route POST api/classroom/register
+// @route POST api/classrooms/register
 // @description create Classroom
 // @access Private
 router.post(
@@ -55,15 +55,16 @@ router.post(
 			room: req.body.room,
 			ownerId: req.user.id,
 			enrollmentCode: classcode,
-			avatar: req.body.avatar
+			avatar: req.body.avatar,
+			user: req.user.id
 		});
 		newClassroom.save().then(classroom => res.json(classroom));
 	}
 );
 
-// @route POST api/classroom/joinclass
-// @description Join In Classroom
-// @access Privateretrieve individual track data and render on single track page
+// @route POST api/classrooms/joinclass
+// @description Join In Classroom by enrollmentcode
+// @access Private
 router.post(
 	'/joinclass',
 	passport.authenticate('jwt', { session: false }),
@@ -73,6 +74,14 @@ router.post(
 		// Check Validation
 		if (!isValid) {
 			return res.status(400).json(errors);
+		}
+
+		// Check user is a student or not
+		const Role = req.user.role;
+		if (Role.toUpperCase() !== 'STUDENT') {
+			return res
+				.status(400)
+				.json({ msg: 'You must be a student to enroll in a classroom' });
 		}
 
 		const classcode = req.body.enrollmentCode;
@@ -92,7 +101,41 @@ router.post(
 	}
 );
 
-// @route GET api/classroom/:user_id/:classroom_id
+// @route GET api/classrooms
+// @description GET all classrooms of an user
+// @access Private
+router.get(
+	'/',
+	passport.authenticate('jwt', { session: false }),
+	(req, res) => {
+		Classroom.find()
+			.then(cls => {
+				var i;
+				var classes = [];
+				for (i = 0; i < cls.length; i++) {
+					//cl = cls[i];
+					//console.log(cl);
+					var students = cls[i].enrolledStudents;
+					//console.log(req.user.id);
+					var j;
+					for (j = 0; j < students.length; j++) {
+						if (req.user.id.toString() === students[j].user.toString()) {
+							classes.push(cls[i]);
+							//	console.log(students[0].user);
+						}
+					}
+				}
+				res.json(classes);
+			})
+			.catch(err =>
+				res
+					.status(404)
+					.json({ noclassfound: 'You are not enrolled in a classroom' })
+			);
+	}
+);
+
+// @route GET api/classrooms/:classroom_id
 // @description GET classroom by classroom id
 // @access Private
 router.get(
