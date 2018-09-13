@@ -1,12 +1,13 @@
 import axios from 'axios';
 import {
-  GET_CLASSROOM,
   GET_CLASSROOMS,
   CLASSROOM_LOADING,
   CLEAR_CURRENT_CLASSROOM,
-  GET_ERRORS,
-  SET_CURRENT_CLASSROOM
+  GET_ERRORS
 } from './types';
+
+// GET_CLASSROOM,
+// SET_CURRENT_CLASSROOM
 
 // Get all classrooms
 export const getClassRooms = () => dispatch => {
