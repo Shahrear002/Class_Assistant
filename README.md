@@ -23,3 +23,11 @@ $ npm start
 ```sh
 $ npm run dev
 ```
+
+### To Run Automated testing
+
+##### make sure, Class_Assistant/server directory & type the following command
+
+```sh
+$ node_modules/mocha/bin/mocha ./test
+```
