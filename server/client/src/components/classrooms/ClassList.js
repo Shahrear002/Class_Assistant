@@ -22,7 +22,7 @@ class ClassList extends Component {
             <p>
               {classroom.user.role}{' '}
               {isEmpty(classroom.section) ? null : (
-                <span>at {classroom.section}</span>
+                <span>{classroom.section}</span>
               )}
             </p>
             <p>

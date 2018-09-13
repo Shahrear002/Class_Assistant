@@ -46,20 +46,20 @@ export const getClassRooms = () => dispatch => {
 //     );
 // };
 
-// // Get profile by handle
-// export const getProfileByHandle = handle => dispatch => {
-//   dispatch(setProfileLoading());
+// // Get classroom by id
+// export const getClassRoomByID = handle => dispatch => {
+//   dispatch(setClassRoomLoading());
 //   axios
-//     .get(`/api/profile/handle/${handle}`)
+//     .get(`/api/classroom/id/${handle}`)
 //     .then(res =>
 //       dispatch({
-//         type: GET_PROFILE,
+//         type: GET_CLASSROOM,
 //         payload: res.data
 //       })
 //     )
 //     .catch(err =>
 //       dispatch({
-//         type: GET_PROFILE,
+//         type: GET_CLASSROOM,
 //         payload: null
 //       })
 //     );

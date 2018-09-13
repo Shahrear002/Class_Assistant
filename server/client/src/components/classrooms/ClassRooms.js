@@ -12,6 +12,7 @@ class ClassRooms extends Component {
   }
 
   render() {
+    const { auth } = this.props.auth;
     const { classrooms, loading } = this.props.classroom;
     let classList;
 
@@ -37,8 +38,16 @@ class ClassRooms extends Component {
               </Link>
               <h1 className="display-4 text-center">Class Rooms</h1>
               <p className="lead text-center">Stay Updated</p>
-              {classList}
-            </div>
+              <Link
+                to="/create-classroom"
+                className="btn btn-secondary float-right"
+              >
+                Create New ClassRoom
+              </Link>{' '}
+              <br /> <br /> <br />
+              {/* {classList} */}
+            </div>{' '}
+            <div className="col-md-12">{classList}</div>
           </div>
         </div>
       </div>
@@ -48,11 +57,13 @@ class ClassRooms extends Component {
 
 ClassRooms.propTypes = {
   getClassRooms: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
   classroom: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  classroom: state.classroom
+  classroom: state.classroom,
+  auth: state.auth
 });
 
 export default connect(
