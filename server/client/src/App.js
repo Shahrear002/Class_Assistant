@@ -25,6 +25,8 @@ import Profile from './components/profile/Profile';
 import NotFound from './components/not-found/NotFound';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
+import ClassRooms from './components/classrooms/ClassRooms';
+import CreateClassRoom from './components/classroom-activity/CreateClassRoom';
 
 import './App.css';
 
@@ -92,6 +94,16 @@ class App extends Component {
                   path="/add-education"
                   component={AddEducation}
                 />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/create-classroom"
+                  component={CreateClassRoom}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/classrooms" component={ClassRooms} />
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/feed" component={Posts} />
